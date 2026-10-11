@@ -1,0 +1,455 @@
+
+==============================================================================
+STEP 1: DATA INPUT AND INSPECTION
+==============================================================================
+Loaded data/fertilizer.csv
+Original column names: ['Temparature', 'Humidity ', 'Moisture', 'Soil Type', 'Crop Type', 'Nitrogen', 'Potassium', 'Phosphorous', 'Fertilizer Name']
+Standardised column names: ['Temperature', 'Humidity', 'Moisture', 'Soil_Type', 'Crop_Type', 'Nitrogen', 'Potassium', 'Phosphorus', 'Fertilizer_Name']
+
+--- First 5 rows ---
+   Temperature  Humidity  Moisture Soil_Type  Crop_Type  Nitrogen  Potassium  Phosphorus Fertilizer_Name
+0           26        52        38     Sandy      Maize        37          0           0            Urea
+1           29        52        45     Loamy  Sugarcane        12          0          36             DAP
+2           34        65        62     Black     Cotton         7          9          30        14-35-14
+3           32        62        34       Red    Tobacco        22          0          20           28-28
+4           28        54        46    Clayey      Paddy        35          0           0            Urea
+
+--- Last 5 rows ---
+    Temperature  Humidity  Moisture Soil_Type  Crop_Type  Nitrogen  Potassium  Phosphorus Fertilizer_Name
+94           25        50        32    Clayey     Pulses        24          0          19           28-28
+95           30        60        27       Red    Tobacco         4         17          17        10-26-26
+96           38        72        51     Loamy      Wheat        39          0           0            Urea
+97           36        60        43     Sandy    Millets        15          0          41             DAP
+98           29        58        57     Black  Sugarcane        12          0          10           20-20
+
+--- Dimensions and columns ---
+Rows: 99   Columns: 9
+Column names: ['Temperature', 'Humidity', 'Moisture', 'Soil_Type', 'Crop_Type', 'Nitrogen', 'Potassium', 'Phosphorus', 'Fertilizer_Name']
+
+--- Data types / DataFrame information ---
+                 dtype  non_null  missing  unique
+Temperature      int64        99        0      14
+Humidity         int64        99        0      13
+Moisture         int64        99        0      41
+Soil_Type          str        99        0       5
+Crop_Type          str        99        0      11
+Nitrogen         int64        99        0      24
+Potassium        int64        99        0      13
+Phosphorus       int64        99        0      32
+Fertilizer_Name    str        99        0       7
+
+--- Descriptive statistics (numeric columns) ---
+             count   mean    std   min   25%   50%   75%   max
+Temperature   99.0  30.28   3.50  25.0  28.0  30.0  33.0  38.0
+Humidity      99.0  59.15   5.84  50.0  54.0  60.0  64.0  72.0
+Moisture      99.0  43.18  11.27  25.0  34.0  41.0  50.5  65.0
+Nitrogen      99.0  18.91  11.60   4.0  10.0  13.0  24.0  42.0
+Potassium     99.0   3.38   5.81   0.0   0.0   0.0   7.5  19.0
+Phosphorus    99.0  18.61  13.48   0.0   9.0  19.0  30.0  42.0
+
+Numerical columns  : ['Temperature', 'Humidity', 'Moisture', 'Nitrogen', 'Potassium', 'Phosphorus']
+Categorical columns: ['Soil_Type', 'Crop_Type', 'Fertilizer_Name']
+
+--- Unique categories ---
+Soil_Type: 5 -> ['Black', 'Clayey', 'Loamy', 'Red', 'Sandy']
+Crop_Type: 11 -> ['Barley', 'Cotton', 'Ground Nuts', 'Maize', 'Millets', 'Oil seeds', 'Paddy', 'Pulses', 'Sugarcane', 'Tobacco', 'Wheat']
+Fertilizer_Name: 7 -> ['10-26-26', '14-35-14', '17-17-17', '20-20', '28-28', 'DAP', 'Urea']
+
+--- Target column ---
+Target = 'Fertilizer_Name'
+                 count  percent
+Fertilizer_Name                
+Urea                22     22.2
+DAP                 18     18.2
+28-28               17     17.2
+14-35-14            14     14.1
+20-20               14     14.1
+17-17-17             7      7.1
+10-26-26             7      7.1
+
+--- Missing values, duplicates, invalid numbers ---
+Total missing cells : 0
+Duplicate rows      : 0
+Invalid numeric values (non-numeric text / outside plausible range):
+             non_numeric_text  below_valid_min  above_valid_max  total_invalid
+column                                                                        
+Temperature                 0                0                0              0
+Humidity                    0                0                0              0
+Moisture                    0                0                0              0
+Nitrogen                    0                0                0              0
+Potassium                   0                0                0              0
+Phosphorus                  0                0                0              0
+
+==============================================================================
+STEP 2: DATA CLEANING
+==============================================================================
+
+--- Missing values per column: before vs after ---
+                 before  after
+Temperature           0      0
+Humidity              0      0
+Moisture              0      0
+Soil_Type             0      0
+Crop_Type             0      0
+Nitrogen              0      0
+Potassium             0      0
+Phosphorus            0      0
+Fertilizer_Name       0      0
+
+--- Cleaning actions ---
+Rows before cleaning           : 99
+Rows with missing target dropped: 0
+Exact duplicate rows removed    : 0
+Rows after cleaning            : 99
+No numeric imputation was needed.
+No categorical imputation was needed.
+Note: zero values in nutrient columns were kept (zero is a valid amount).
+
+--- Invalid numeric values found in the raw data ---
+             non_numeric_text  below_valid_min  above_valid_max  total_invalid
+column                                                                        
+Temperature                 0                0                0              0
+Humidity                    0                0                0              0
+Moisture                    0                0                0              0
+Nitrogen                    0                0                0              0
+Potassium                   0                0                0              0
+Phosphorus                  0                0                0              0
+
+--- Potential outliers (IQR rule) - reported, NOT removed ---
+               Q1    Q3   IQR  lower_fence  upper_fence  n_outliers  percent
+column                                                                      
+Temperature  28.0  33.0   5.0        20.50        40.50           0      0.0
+Humidity     54.0  64.0  10.0        39.00        79.00           0      0.0
+Moisture     34.0  50.5  16.5         9.25        75.25           0      0.0
+Nitrogen     10.0  24.0  14.0       -11.00        45.00           0      0.0
+Potassium     0.0   7.5   7.5       -11.25        18.75           2      2.0
+Phosphorus    9.0  30.0  21.0       -22.50        61.50           0      0.0
+Outliers can be genuine field conditions, so they are kept.
+
+--- Before / after summary ---
+                          before     after
+rows                          99        99
+missing cells                  0         0
+duplicate rows                 0         0
+invalid numeric cells          0         0
+Cleaned dataset saved to: data/processed/fertilizer_cleaned.csv
+
+==============================================================================
+STEP 3: DATA MANIPULATION AND EXPLORATORY ANALYSIS
+==============================================================================
+
+--- 1. Selecting columns and rows (loc / iloc) ---
+Purpose: pull out just the soil-nutrient columns for the first 5 rows.
+   Nitrogen  Phosphorus  Potassium
+0        37           0          0
+1        12          36          0
+2         7          30          9
+3        22          20          0
+4        35           0          0
+iloc (rows 0-2, first 3 columns by position):
+   Temperature  Humidity  Moisture
+0           26        52        38
+1           29        52        45
+2           34        65        62
+
+--- 2. Filtering with conditions ---
+Purpose: find fields with above-median nitrogen AND at-least-median moisture.
+Rows matching: 24 of 99
+Most common fertilizers among those rows:
+Fertilizer_Name
+28-28    10
+Urea      9
+DAP       4
+
+--- 3. Derived columns (added to a copy) ---
+Purpose: NPK_Total = overall nutrient level; Temp_Band groups temperature into thirds so we can build frequency tables.
+   Nitrogen  Phosphorus  Potassium  NPK_Total  Temperature Temp_Band
+0        37           0          0         37           26       Low
+1        12          36          0         48           29    Medium
+2         7          30          9         46           34      High
+3        22          20          0         42           32    Medium
+4        35           0          0         35           28       Low
+
+--- 4. Sorting ---
+Purpose: which records have the largest total nutrient level?
+   Fertilizer_Name    Crop_Type  NPK_Total
+97             DAP      Millets         56
+65             DAP       Cotton         55
+14             DAP  Ground Nuts         55
+53             DAP       Barley         54
+37             DAP        Paddy         53
+Sorted by categorical column (Crop_Type, then Nitrogen descending):
+   Crop_Type  Nitrogen Fertilizer_Name
+17    Barley        21           28-28
+84    Barley        21           28-28
+5     Barley        12        17-17-17
+53    Barley        12             DAP
+44    Barley        10             DAP
+
+--- 5. Grouping and aggregation ---
+Purpose: compare nutrient levels across fertilizer classes.
+                Nitrogen                             Phosphorus                             Potassium                            
+                   count   mean median min max   std      count   mean median min max   std     count   mean median min max   std
+Fertilizer_Name                                                                                                                  
+10-26-26               7   7.57    6.0   4  13  3.51          7  17.71   17.0  15  21  2.29         7  17.71   18.0  16  19  1.11
+14-35-14              14   8.21    8.0   5  10  1.31         14  29.57   30.0  22  33  2.53        14   8.57    9.0   7  10  1.09
+17-17-17               7  12.14   12.0  10  15  1.77          7  13.14   13.0  11  15  1.57         7  13.00   13.0  10  15  1.63
+20-20                 14  11.21   11.5   8  14  1.89         14  11.57   11.5   8  15  2.50        14   0.00    0.0   0   0  0.00
+28-28                 17  22.65   23.0  21  24  1.17         17  21.06   20.0  18  28  2.66        17   0.00    0.0   0   0  0.00
+DAP                   18  12.94   13.0  10  15  1.55         18  38.44   38.5  35  42  2.20        18   0.00    0.0   0   0  0.00
+Urea                  22  38.36   38.5  35  42  2.26         22   0.00    0.0   0   0  0.00        22   0.00    0.0   0   0  0.00
+
+Mean NPK_Total by soil type:
+           count   mean  median
+Soil_Type                      
+Black         19  38.05    39.0
+Clayey        20  40.45    41.5
+Loamy         21  40.86    42.0
+Red           19  44.32    46.0
+Sandy         20  40.85    42.0
+
+Mean nutrients by crop type:
+             Nitrogen  Phosphorus  Potassium
+Crop_Type                                   
+Barley           12.6        26.0        5.3
+Cotton           16.4        23.8        3.3
+Ground Nuts      23.3        21.6        2.0
+Maize            18.3        18.7        5.7
+Millets          23.2        14.4        0.0
+Oil seeds        19.0        17.3        2.3
+Paddy            20.8        16.3        3.7
+Pulses           18.4        17.5        4.2
+Sugarcane        14.6        17.6        4.2
+Tobacco          19.1        19.3        4.9
+Wheat            23.3        14.4        2.9
+
+--- 6. Frequency tables ---
+Soil type x Temperature band (counts):
+Temp_Band  High  Low  Medium
+Soil_Type                   
+Black         6    8       5
+Clayey        6   11       3
+Loamy         7    5       9
+Red           6    3      10
+Sandy         4    6      10
+
+Fertilizer frequency (relative):
+Fertilizer_Name
+Urea        0.222
+DAP         0.182
+28-28       0.172
+14-35-14    0.141
+20-20       0.141
+17-17-17    0.071
+10-26-26    0.071
+
+--- 7. Adding / deleting rows and columns (on a copy) ---
+Dropped a column and appended a row: shape (99, 11) -> (100, 10)
+Deleted the row again: shape (99, 10)
+
+--- 8. Missing observations and duplicates in the cleaned data ---
+Missing cells: 0   Duplicate rows: 0
+
+--- Overall structure ---
+99 records, 9 columns, 7 fertilizer classes, 5 soil types, 11 crop types.
+Class balance: largest class 'Urea' (22 rows), smallest '10-26-26' (7 rows).
+
+--- Mean of each feature per fertilizer class ---
+                 Temperature  Humidity  Moisture  Nitrogen  Potassium  Phosphorus
+Fertilizer_Name                                                                  
+10-26-26                29.7      58.1      39.3       7.6       17.7        17.7
+14-35-14                31.4      61.1      45.2       8.2        8.6        29.6
+17-17-17                29.0      57.6      47.1      12.1       13.0        13.1
+20-20                   29.1      57.6      45.3      11.2        0.0        11.6
+28-28                   29.5      58.1      41.9      22.6        0.0        21.1
+DAP                     31.8      61.3      42.6      12.9        0.0        38.4
+Urea                    30.2      58.7      42.0      38.4        0.0         0.0
+
+--- Which class has the highest mean of each nutrient? ---
+Nitrogen   : Urea (38.4); lowest: 10-26-26 (7.6)
+Phosphorus : DAP (38.4); lowest: Urea (0.0)
+Potassium  : 10-26-26 (17.7); lowest: 20-20 (0.0)
+
+--- Correlation matrix (Pearson) among numeric features ---
+             Temperature  Humidity  Moisture  Nitrogen  Potassium  Phosphorus
+Temperature         1.00      0.97      0.09     -0.03      -0.02        0.21
+Humidity            0.97      1.00      0.09     -0.06      -0.00        0.20
+Moisture            0.09      0.09      1.00     -0.10       0.03        0.01
+Nitrogen           -0.03     -0.06     -0.10      1.00      -0.50       -0.69
+Potassium          -0.02     -0.00      0.03     -0.50       1.00        0.09
+Phosphorus          0.21      0.20      0.01     -0.69       0.09        1.00
+  strongest pairs: Temperature vs Humidity: r = 0.97
+  strongest pairs: Nitrogen vs Phosphorus: r = -0.69
+  strongest pairs: Nitrogen vs Potassium: r = -0.50
+Reminder: correlation describes association only; it does not show causation.
+
+==============================================================================
+STEP 4: STATISTICAL ANALYSIS
+==============================================================================
+
+--- Descriptive statistics, quartiles, skewness ---
+              mean  median  mode  variance    std    Q1    Q3   IQR  skew  kurtosis
+feature                                                                            
+Temperature  30.28    30.0  30.0     12.27   3.50  28.0  33.0   5.0  0.35     -0.85
+Humidity     59.15    60.0  60.0     34.11   5.84  54.0  64.0  10.0  0.10     -1.03
+Moisture     43.18    41.0  34.0    127.05  11.27  34.0  50.5  16.5  0.44     -0.89
+Nitrogen     18.91    13.0  12.0    134.55  11.60  10.0  24.0  14.0  0.82     -0.79
+Potassium     3.38     0.0   0.0     33.81   5.81   0.0   7.5   7.5  1.41      0.56
+Phosphorus   18.61    19.0   0.0    181.63  13.48   9.0  30.0  21.0  0.08     -1.14
+Skewness: ~0 symmetric, > 0 right tail, < 0 left tail (|skew| > 1 is usually called strongly skewed).
+Strongly skewed features: Potassium
+
+--- Shapiro-Wilk normality test (each numeric feature) ---
+Purpose: check whether a feature looks normally distributed.
+H0: the feature is drawn from a normal distribution.  H1: it is not.
+                  W  p_value                  result
+feature                                             
+Temperature  0.9513   0.0011  reject H0 (not normal)
+Humidity     0.9489   0.0008  reject H0 (not normal)
+Moisture     0.9444   0.0004  reject H0 (not normal)
+Nitrogen     0.8426   0.0000  reject H0 (not normal)
+Potassium    0.6283   0.0000  reject H0 (not normal)
+Phosphorus   0.9249   0.0000  reject H0 (not normal)
+(alpha = 0.05. 'Cannot reject H0' does not prove normality, especially with small samples.)
+
+--- Correlation analysis ---
+Pearson measures linear association; Spearman measures monotonic (rank) association.
+H0 for each pair: true correlation = 0.
+Pearson:
+             Temperature  Humidity  Moisture  Nitrogen  Potassium  Phosphorus
+Temperature         1.00      0.97      0.09     -0.03      -0.02        0.21
+Humidity            0.97      1.00      0.09     -0.06      -0.00        0.20
+Moisture            0.09      0.09      1.00     -0.10       0.03        0.01
+Nitrogen           -0.03     -0.06     -0.10      1.00      -0.50       -0.69
+Potassium          -0.02     -0.00      0.03     -0.50       1.00        0.09
+Phosphorus          0.21      0.20      0.01     -0.69       0.09        1.00
+Spearman:
+             Temperature  Humidity  Moisture  Nitrogen  Potassium  Phosphorus
+Temperature         1.00      0.98      0.11     -0.05      -0.00        0.21
+Humidity            0.98      1.00      0.10     -0.05       0.01        0.18
+Moisture            0.11      0.10      1.00     -0.11       0.05       -0.01
+Nitrogen           -0.05     -0.05     -0.11      1.00      -0.63       -0.51
+Potassium          -0.00      0.01      0.05     -0.63       1.00        0.14
+Phosphorus          0.21      0.18     -0.01     -0.51       0.14        1.00
+Five strongest Pearson pairs with p-values:
+                     pair  pearson_r  p_value
+  Temperature vs Humidity     0.9732   0.0000
+   Nitrogen vs Phosphorus    -0.6870   0.0000
+    Nitrogen vs Potassium    -0.5001   0.0000
+Temperature vs Phosphorus     0.2075   0.0393
+   Humidity vs Phosphorus     0.2040   0.0428
+Correlation shows association only; it does not prove one variable causes another.
+
+--- Do nutrient levels differ between fertilizer classes? ---
+Purpose: compare a feature across 2+ fertilizer groups.
+H0: all groups have the same distribution/mean.  H1: at least one group differs.
+Choice of test: if every group passes Shapiro-Wilk AND Levene (equal variances)
+  -> one-way ANOVA; otherwise -> Kruskal-Wallis (non-parametric).
+t-test / Mann-Whitney / Wilcoxon compare only TWO groups (or paired data); with several fertilizer classes ANOVA / Kruskal-Wallis are the right tools.
+
+[Nitrogen]
+  Group normality (Shapiro) satisfied: False; Levene W = 2.537, p = 0.0256 -> equal variances: False
+  Test: Kruskal-Wallis  H = 86.758, p = 1.427e-16, eta^2_H = 0.88
+  Interpretation: p < 0.05: reject H0 - Nitrogen differs between at least two fertilizer classes (a post-hoc test would be needed to say which).
+
+[Phosphorus]
+  Group normality (Shapiro) satisfied: False; Levene W = 6.231, p = 0.0000 -> equal variances: False
+  Test: Kruskal-Wallis  H = 94.965, p = 2.812e-18, eta^2_H = 0.97
+  Interpretation: p < 0.05: reject H0 - Phosphorus differs between at least two fertilizer classes (a post-hoc test would be needed to say which).
+
+[Potassium]
+  Group normality (Shapiro) satisfied: False; Levene W = 15.610, p = 0.0000 -> equal variances: False
+  Test: Kruskal-Wallis  H = 97.437, p = 8.59e-19, eta^2_H = 0.99
+  Interpretation: p < 0.05: reject H0 - Potassium differs between at least two fertilizer classes (a post-hoc test would be needed to say which).
+
+[Temperature]
+  Group normality (Shapiro) satisfied: False; Levene W = 0.251, p = 0.9580 -> equal variances: True
+  Test: Kruskal-Wallis  H = 7.467, p = 0.2798, eta^2_H = 0.02
+  Interpretation: p >= 0.05: no evidence that Temperature differs between classes.
+
+[Humidity]
+  Group normality (Shapiro) satisfied: False; Levene W = 0.458, p = 0.8376 -> equal variances: True
+  Test: Kruskal-Wallis  H = 5.685, p = 0.4593, eta^2_H = -0.00
+  Interpretation: p >= 0.05: no evidence that Humidity differs between classes.
+
+[Moisture]
+  Group normality (Shapiro) satisfied: False; Levene W = 1.514, p = 0.1821 -> equal variances: True
+  Test: Kruskal-Wallis  H = 2.621, p = 0.8547, eta^2_H = -0.04
+  Interpretation: p >= 0.05: no evidence that Moisture differs between classes.
+
+Note: several tests were run, so a few 'significant' results can occur by chance; interpret borderline p-values cautiously.
+
+--- Chi-square tests of independence (categorical vs fertilizer) ---
+Purpose: is the fertilizer label associated with soil type / crop type?
+H0: the two variables are independent.  H1: they are associated.
+
+[Soil_Type x Fertilizer_Name]  table size: 5 x 7
+  chi2 = 18.228, dof = 24, p = 0.7918, Cramer's V = 0.21
+  Cells with expected count < 5: 100%
+  WARNING: more than 20% of expected counts are < 5, so the chi-square approximation is unreliable here (dataset too small for this table).
+  Interpretation: p >= 0.05: no evidence of association.
+
+[Crop_Type x Fertilizer_Name]  table size: 11 x 7
+  chi2 = 58.337, dof = 60, p = 0.5367, Cramer's V = 0.31
+  Cells with expected count < 5: 100%
+  WARNING: more than 20% of expected counts are < 5, so the chi-square approximation is unreliable here (dataset too small for this table).
+  Interpretation: p >= 0.05: no evidence of association.
+
+==============================================================================
+STEP 5: RECOMMENDATION MODEL (nearest neighbour, from scratch)
+==============================================================================
+
+--- Train/test split and k selection ---
+Training rows: 80   Test rows: 19   (seed = 42, stratified)
+Leave-one-out accuracy on training data for each k: k=1: 0.512, k=3: 0.350, k=5: 0.287, k=7: 0.300, k=9: 0.375
+Selected k = 1
+
+--- Test-set results (manual metrics) ---
+Accuracy: 0.421  (8/19 correct)
+Baseline (always predict the most common class): 0.222
+Macro precision 0.390   recall 0.417   F1 0.402
+          precision  recall     f1  support
+10-26-26      1.000   1.000  1.000        1
+14-35-14      0.333   0.333  0.333        3
+17-17-17      0.000   0.000  0.000        1
+20-20         0.000   0.000  0.000        3
+28-28         0.250   0.333  0.286        3
+DAP           0.400   0.500  0.444        4
+Urea          0.750   0.750  0.750        4
+(precision is reported as 0 for a class that was never predicted)
+
+Confusion matrix (rows = actual, columns = predicted):
+          10-26-26  14-35-14  17-17-17  20-20  28-28  DAP  Urea
+10-26-26         1         0         0      0      0    0     0
+14-35-14         0         1         1      0      0    1     0
+17-17-17         0         1         0      0      0    0     0
+20-20            0         0         1      0      1    0     1
+28-28            0         0         0      0      1    2     0
+DAP              0         1         0      0      1    2     0
+Urea             0         0         0      0      1    0     3
+
+--- Robustness: 10 repeated random splits ---
+Accuracy per split: [0.263, 0.526, 0.474, 0.526, 0.474, 0.474, 0.474, 0.474, 0.421, 0.421]
+Mean 0.453  std 0.075  min 0.263  max 0.526
+CAUTION: the test set has only 19 rows, so one split's accuracy is very noisy; trust the repeated-split average more than a single number.
+
+==============================================================================
+STEP 6: DATA VISUALISATION
+==============================================================================
+
+--- Generating figures (saved in results/figures/) ---
+[01] Missing values per column: No missing values in the raw data.
+[02] Fertilizer class distribution: Most common: Urea (22); least common: 10-26-26 (7) out of 7 categories.
+[03] Crop type distribution: Most common: Sugarcane (13); least common: Maize (6) out of 11 categories.
+[04] Soil type distribution: Most common: Loamy (21); least common: Red (19) out of 5 categories.
+[05] Histograms: Most skewed feature: Potassium (skewness 1.43).
+[06] Box plots: Widest spread (IQR): Phosphorus (21.0); narrowest: Temperature (5.0).
+[07] Outliers: 2 flagged value(s) in total; most in Potassium (2).
+[08] Correlation heatmap: Strongest association: Temperature vs Humidity (r = 0.97); association, not causation.
+[09] Scatter plots: Pearson r: Nitrogen-Phosphorus = -0.69; Nitrogen-Potassium = -0.50; Temperature-Humidity = 0.97. Check the colours for visible class groupings.
+[10] Pair plot: Diagonal shows each feature's distribution per class; off-diagonal panels show pairwise structure.
+[11] Nutrients by fertilizer: Highest median: Nitrogen -> Urea (38.5); Phosphorus -> DAP (38.5); Potassium -> 10-26-26 (18).
+[12] Average nutrients per fertilizer: Highest average: Nitrogen -> Urea (38.4); Phosphorus -> DAP (38.4); Potassium -> 10-26-26 (17.7).
+[13] Crop vs fertilizer: Most frequent combination: Cotton + DAP (4 records); 23 of 77 combinations never occur.
+[14] Soil vs fertilizer: Most frequent combination: Black + Urea (7 records); 2 of 35 combinations never occur.
+[15] Confusion matrix: Most frequent error: actual '28-28' predicted as 'DAP' (2 time(s)).
