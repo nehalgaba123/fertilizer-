@@ -438,18 +438,12 @@ STEP 6: DATA VISUALISATION
 ==============================================================================
 
 --- Generating figures (saved in results/figures/) ---
-[01] Missing values per column: No missing values in the raw data.
-[02] Fertilizer class distribution: Most common: Urea (22); least common: 10-26-26 (7) out of 7 categories.
-[03] Crop type distribution: Most common: Sugarcane (13); least common: Maize (6) out of 11 categories.
-[04] Soil type distribution: Most common: Loamy (21); least common: Red (19) out of 5 categories.
-[05] Histograms: Most skewed feature: Potassium (skewness 1.43).
-[06] Box plots: Widest spread (IQR): Phosphorus (21.0); narrowest: Temperature (5.0).
-[07] Outliers: 2 flagged value(s) in total; most in Potassium (2).
-[08] Correlation heatmap: Strongest association: Temperature vs Humidity (r = 0.97); association, not causation.
-[09] Scatter plots: Pearson r: Nitrogen-Phosphorus = -0.69; Nitrogen-Potassium = -0.50; Temperature-Humidity = 0.97. Check the colours for visible class groupings.
-[10] Pair plot: Diagonal shows each feature's distribution per class; off-diagonal panels show pairwise structure.
-[11] Nutrients by fertilizer: Highest median: Nitrogen -> Urea (38.5); Phosphorus -> DAP (38.5); Potassium -> 10-26-26 (18).
-[12] Average nutrients per fertilizer: Highest average: Nitrogen -> Urea (38.4); Phosphorus -> DAP (38.4); Potassium -> 10-26-26 (17.7).
-[13] Crop vs fertilizer: Most frequent combination: Cotton + DAP (4 records); 23 of 77 combinations never occur.
-[14] Soil vs fertilizer: Most frequent combination: Black + Urea (7 records); 2 of 35 combinations never occur.
-[15] Confusion matrix: Most frequent error: actual '28-28' predicted as 'DAP' (2 time(s)).
+[01] Fertilizer class profiles: Most distinctive profile: 10-26-26 has Potassium +2.5 SD from the overall mean (class mean 17.7).
+[02] NPK distributions by fertilizer: Highest median: Nitrogen -> Urea (38.5); Phosphorus -> DAP (38.5); Potassium -> 10-26-26 (18).
+[03] Nutrient space (N vs P, K as size): 98% of records sit at an N-P combination that belongs to only one fertilizer class; 22 records need no phosphorus.
+[04] Environment by fertilizer: No environmental variable differs significantly between fertilizer classes (all Kruskal-Wallis p >= 0.05).
+[05] Variable importance (effect sizes): Strongest association: Potassium (0.99); weakest: Moisture (0.03).
+[06] Crop & soil vs fertilizer: Strongest pairing (categories with >= 3 records): crop type 'Ground Nuts' -> DAP (43%, 3 of 7 records).
+[07] Correlation with significance: Strongest relationship: Temperature vs Humidity (r = 0.97, p = 1.06e-63); 5 of 15 pairs are significant.
+[08] PCA projection: PC1 + PC2 explain 65% of variance; PC1 is driven mainly by Humidity, PC2 by Nitrogen.
+[09] Confusion matrix: Accuracy 42.1% vs baseline 21.1%; most frequent error: actual '28-28' predicted as 'DAP' (2 time(s)).

@@ -26,21 +26,16 @@ from src.report import heading, log, save_report, subheading  # noqa: E402
 
 def make_figures(raw_std, clean, summary, cm, accuracy):
     subheading("Generating figures (saved in results/figures/)")
+    visualization.clear_old_figures()          # remove PNGs from earlier runs
     jobs = [
-        ("Missing values per column", lambda: visualization.plot_missing(raw_std)),
-        ("Fertilizer class distribution", lambda: visualization.plot_fertilizer_distribution(clean)),
-        ("Crop type distribution", lambda: visualization.plot_crop_distribution(clean)),
-        ("Soil type distribution", lambda: visualization.plot_soil_distribution(clean)),
-        ("Histograms", lambda: visualization.plot_histograms(clean)),
-        ("Box plots", lambda: visualization.plot_boxplots(clean)),
-        ("Outliers", lambda: visualization.plot_outliers(clean, summary["outliers"])),
-        ("Correlation heatmap", lambda: visualization.plot_correlation_heatmap(clean)),
-        ("Scatter plots", lambda: visualization.plot_scatter(clean)),
-        ("Pair plot", lambda: visualization.plot_pairplot(clean)),
-        ("Nutrients by fertilizer", lambda: visualization.plot_nutrients_by_class(clean)),
-        ("Average nutrients per fertilizer", lambda: visualization.plot_average_nutrients(clean)),
-        ("Crop vs fertilizer", lambda: visualization.plot_crop_vs_fertilizer(clean)),
-        ("Soil vs fertilizer", lambda: visualization.plot_soil_vs_fertilizer(clean)),
+        ("Fertilizer class profiles", lambda: visualization.plot_class_profile(clean)),
+        ("NPK distributions by fertilizer", lambda: visualization.plot_nutrient_distributions(clean)),
+        ("Nutrient space (N vs P, K as size)", lambda: visualization.plot_nutrient_space(clean)),
+        ("Environment by fertilizer", lambda: visualization.plot_environment_by_class(clean)),
+        ("Variable importance (effect sizes)", lambda: visualization.plot_variable_importance(clean)),
+        ("Crop & soil vs fertilizer", lambda: visualization.plot_categorical_associations(clean)),
+        ("Correlation with significance", lambda: visualization.plot_correlation_significance(clean)),
+        ("PCA projection", lambda: visualization.plot_pca_projection(clean)),
         ("Confusion matrix", lambda: visualization.plot_confusion_matrix(cm, accuracy)),
     ]
     for i, (name, job) in enumerate(jobs, 1):
